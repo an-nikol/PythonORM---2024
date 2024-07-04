@@ -90,5 +90,55 @@ def order_books_by_year():
         result.append(f"{b.publication_year} year: {b.title} by {b.author}")
 
     return '\n'.join(result)
+#
+# print(order_books_by_year())
 
-print(order_books_by_year())
+# Task 04.
+
+def delete_review_by_id(rev_id):
+    deleted_review = Review.objects.get(id=rev_id)
+    deleted_review.delete()
+
+    return f'Review by {deleted_review.reviewer_name} was deleted'
+
+# print(delete_review_by_id(4))
+
+# Task 05.
+
+def filter_authors_by_nationalities(nationality):
+    ordered_authors = Author.objects.filter(nationality=nationality).order_by('first_name', 'last_name')
+
+    result = []
+
+    for a in ordered_authors:
+        if a.biography:
+            result.append(a.biography)
+        else:
+            result.append(f"{a.first_name} {a.last_name}")
+
+    return '\n'.join(result)
+
+# print(filter_authors_by_nationalities('American'))
+
+# Task 06.
+
+def filter_authors_by_birth_year(first_year, second_year):
+    authors = Author.objects.filter(birth_date__year__range=(first_year, second_year)).order_by('-birth_date')
+
+    result = []
+
+    for a in authors:
+        result.append(f"{a.birth_date}: {a.first_name} {a.last_name}")
+
+    return '\n'.join(result)
+
+
+
+# Task 07.
+
+def change_reviewer_name(reviewer_name, new_name):
+    Review.objects.filter(reviewer_name=reviewer_name).update(reviewer_name=new_name)
+
+    return Review.objects.all()
+
+# print(change_reviewer_name("Alice Johnson", "A.J."))
